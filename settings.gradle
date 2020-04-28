@@ -1,0 +1,3 @@
+rootProject.name='RetrofitKtx'
+include ':app'
+include ':retrofit_ktx'
