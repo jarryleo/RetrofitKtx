@@ -2,12 +2,12 @@ package cn.leo.retrofit_ktx.view_model
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
-import cn.leo.retrofit_ktx.http.MJob
-import cn.leo.retrofit_ktx.refactor.OkHttp3Creator
+import cn.leo.retrofit_ktx.http.KJob
+import cn.leo.retrofit_ktx.http.create
+import cn.leo.retrofit_ktx.utils.getSuperClassGenericType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
-import okhttp3.OkHttpClient
 import kotlin.reflect.KFunction
 
 /**
@@ -17,7 +17,7 @@ import kotlin.reflect.KFunction
  * ViewModel 生命周期比 Activity 长，不应该持有任何view引用或者包含view的引用，
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-abstract class MViewModel<T : Any> : ViewModel() {
+abstract class KViewModel<T : Any> : ViewModel() {
 
     /**
      * 网络请求帮助类
@@ -26,7 +26,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     /**
      * liveData帮助类
      */
-    private val mLiveDataHelper by lazy { LiveDataHelper() }
+    private val mLiveDataHelper by lazy { KLiveDataHelper() }
     /**
      * 协程帮助类
      */
@@ -35,7 +35,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
     /**
      * 非代理网络请求
      */
-    val api = mApiHelper.api
+    internal val api by lazy { createApi() }
 
     /**
      * 代理网络请求
@@ -44,9 +44,9 @@ abstract class MViewModel<T : Any> : ViewModel() {
 
     /**
      * 代理传参网络请求
-     * @param obj 在订阅里原样返回
+     * @param extra 在订阅里原样返回
      */
-    fun apis(obj: Any? = null) = mApiHelper.apis<Any>(obj)
+    fun apis(extra: Any? = null) = mApiHelper.apis<Any>(extra)
 
     /**
      * 获取接口基础地址
@@ -54,10 +54,16 @@ abstract class MViewModel<T : Any> : ViewModel() {
     abstract fun getBaseUrl(): String
 
     /**
-     * 获取http请求加载器retrofit
+     * 创建请求api
+     * 可以重写，配置retrofit 和 okHttp3
      */
-    open fun getOkHttpClient(): OkHttpClient {
-        return OkHttp3Creator.build()
+    open fun createApi(): T {
+        return javaClass
+            .getSuperClassGenericType<T>() //获取泛型类型
+            .create {
+                //创建retrofit，生成请求service
+                baseUrl = getBaseUrl()
+            }
     }
 
 
@@ -74,19 +80,19 @@ abstract class MViewModel<T : Any> : ViewModel() {
      */
     fun <R> executeRequest(
         deferred: Deferred<R>,
-        liveData: MLiveData<R>,
-        obj: Any? = null
-    ): Job = mCoroutineHelper.executeRequest(deferred, liveData, obj)
+        liveData: KLiveData<R>,
+        extra: Any? = null
+    ): Job = mCoroutineHelper.executeRequest(deferred, liveData, extra)
 
     /**
      * 异步方法 回调在主线程
      */
-    fun <R> async(block: suspend CoroutineScope.() -> R): MJob<R> = mCoroutineHelper.async(block)
+    fun <R> async(block: suspend CoroutineScope.() -> R): KJob<R> = mCoroutineHelper.async(block)
 
     /**
      * 获取liveData
      */
-    fun <R> getLiveData(key: String? = null): MLiveData<R> {
+    fun <R> getLiveData(key: String? = null): KLiveData<R> {
         //获取当前方法名称
         val methodName = key ?: Thread.currentThread()
             .stackTrace
@@ -102,7 +108,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
      */
     fun <R> observe(
         lifecycleOwner: LifecycleOwner,
-        kFunction: KFunction<MJob<R>>,
+        kFunction: KFunction<KJob<R>>,
         result: (Result<R>).() -> Unit = {}
     ) = getLiveData<R>(kFunction.name).observe(lifecycleOwner, result)
 
@@ -126,7 +132,7 @@ abstract class MViewModel<T : Any> : ViewModel() {
      * @param kFunction 参数写法 Api::test
      */
     fun <R> observeForever(
-        kFunction: KFunction<MJob<R>>,
+        kFunction: KFunction<KJob<R>>,
         result: (Result<R>).() -> Unit = {}
     ) = getLiveData<R>(kFunction.name).observeForever(result)
 

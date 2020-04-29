@@ -1,8 +1,8 @@
 package cn.leo.retrofit_ktx.view_model
 
 import androidx.lifecycle.viewModelScope
-import cn.leo.retrofit_ktx.http.MInterceptorManager
-import cn.leo.retrofit_ktx.http.MJob
+import cn.leo.retrofit_ktx.http.KInterceptorManager
+import cn.leo.retrofit_ktx.http.KJob
 import kotlinx.coroutines.*
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -11,12 +11,12 @@ import kotlin.reflect.KProperty
  * @author : ling luo
  * @date : 2019-12-12
  */
-class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCoroutineHelper> {
+class ViewModelCoroutineHelper : ReadOnlyProperty<KViewModel<*>, ViewModelCoroutineHelper> {
 
-    private lateinit var model: MViewModel<*>
+    private lateinit var model: KViewModel<*>
 
     override fun getValue(
-        thisRef: MViewModel<*>,
+        thisRef: KViewModel<*>,
         property: KProperty<*>
     ): ViewModelCoroutineHelper {
         model = thisRef
@@ -28,33 +28,33 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
      */
     fun <R> executeRequest(
         deferred: Deferred<R>,
-        liveData: MLiveData<R>,
-        obj: Any? = null
+        liveData: KLiveData<R>,
+        extra: Any? = null
     ): Job = model.viewModelScope.launch(
         model.viewModelScope.coroutineContext + Dispatchers.IO
     ) {
         try {
             liveData.showLoading()
             val result = deferred.await()
-            MInterceptorManager.interceptors.forEach {
-                if (it.intercept(obj, result, liveData)) {
+            KInterceptorManager.interceptors.forEach {
+                if (it.intercept(extra, result, liveData)) {
                     return@launch
                 }
             }
-            liveData.success(result, obj)
+            liveData.success(result, extra)
         } catch (e: CancellationException) {
             //取消请求
             e.printStackTrace()
         } catch (e: Exception) {
             e.printStackTrace()
-            liveData.failed(e, obj)
+            liveData.failed(e, extra)
         }
     }
 
     /**
      * 异步方法 回调在主线程
      */
-    fun <R> async(block: suspend CoroutineScope.() -> R): MJob<R> {
+    fun <R> async(block: suspend CoroutineScope.() -> R): KJob<R> {
         val liveData = model.getLiveData<R>()
         //协程包装(异步)
         val deferred = model.viewModelScope.async(
@@ -78,6 +78,6 @@ class ViewModelCoroutineHelper : ReadOnlyProperty<MViewModel<*>, ViewModelCorout
                 liveData.failed(e)
             }
         }
-        return MJob(job)
+        return KJob(job)
     }
 }

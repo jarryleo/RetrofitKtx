@@ -13,7 +13,7 @@ import kotlinx.coroutines.awaitAll
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 @Throws(Exception::class)
-suspend fun <R : Any> MJob<R>.await(): R? {
+suspend fun <R : Any> KJob<R>.await(): R? {
     (this.job as? Deferred<R>)?.let {
         return it.await()
     }
@@ -24,5 +24,5 @@ suspend fun <R : Any> MJob<R>.await(): R? {
  * 多任务同时await
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-suspend fun <T> Collection<MJob<T>>.awaitAll(): List<T> =
+suspend fun <T> Collection<KJob<T>>.awaitAll(): List<T> =
     map { it.job as Deferred<T> }.awaitAll()

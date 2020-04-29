@@ -8,18 +8,19 @@ import java.util.concurrent.ConcurrentHashMap
  * liveData 创建和缓存类
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
-class LiveDataHelper {
+class KLiveDataHelper {
 
-    private val mLiveDataCache = ConcurrentHashMap<String, MLiveData<*>>()
+    private val mLiveDataCache = ConcurrentHashMap<String, KLiveData<*>>()
 
     /**
      * 获取LiveData
+     * @param key 方法名做key
      */
-    fun <R> getLiveData(key: String): MLiveData<R> {
+    fun <R> getLiveData(key: String): KLiveData<R> {
         return if (mLiveDataCache.containsKey(key)) {
-            mLiveDataCache[key] as MLiveData<R>
+            mLiveDataCache[key] as KLiveData<R>
         } else {
-            val liveData = MLiveData<R>()
+            val liveData = KLiveData<R>()
             mLiveDataCache[key] = liveData
             liveData
         }

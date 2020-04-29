@@ -1,4 +1,4 @@
-package cn.leo.retrofit_ktx.exceptions
+package cn.leo.retrofitktx.exceptions
 
 import android.net.ParseException
 import com.google.gson.JsonParseException

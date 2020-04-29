@@ -41,11 +41,11 @@ import java.lang.reflect.Type
  * * Response wrapped body (e.g., `Deferred<Response<User>>`) returns a [Response] object for all
  * HTTP responses and throws [IOException][java.io.IOException] for network errors
  */
-class MJobAdapterFactory private constructor() : CallAdapter.Factory() {
+class KJobAdapterFactory private constructor() : CallAdapter.Factory() {
     companion object {
         @JvmStatic
         @JvmName("create")
-        operator fun invoke() = MJobAdapterFactory()
+        operator fun invoke() = KJobAdapterFactory()
     }
 
     override fun get(
@@ -53,7 +53,7 @@ class MJobAdapterFactory private constructor() : CallAdapter.Factory() {
         annotations: Array<out Annotation>,
         retrofit: Retrofit
     ): CallAdapter<*, *>? {
-        if (MJob::class.java != getRawType(returnType)) {
+        if (KJob::class.java != getRawType(returnType)) {
             return null
         }
         if (returnType !is ParameterizedType) {
@@ -82,11 +82,11 @@ class MJobAdapterFactory private constructor() : CallAdapter.Factory() {
 
     private class BodyCallAdapter<T : Any>(
         private val responseType: Type
-    ) : CallAdapter<T, MJob<T>> {
+    ) : CallAdapter<T, KJob<T>> {
 
         override fun responseType() = responseType
 
-        override fun adapt(call: Call<T>): MJob<T> {
+        override fun adapt(call: Call<T>): KJob<T> {
             val deferred = CompletableDeferred<T>()
 
             deferred.invokeOnCompletion {
@@ -109,17 +109,17 @@ class MJobAdapterFactory private constructor() : CallAdapter.Factory() {
                 }
             })
 
-            return MJob(deferred)
+            return KJob(deferred)
         }
     }
 
     private class ResponseCallAdapter<T : Any>(
         private val responseType: Type
-    ) : CallAdapter<T, MJob<Response<T>>> {
+    ) : CallAdapter<T, KJob<Response<T>>> {
 
         override fun responseType() = responseType
 
-        override fun adapt(call: Call<T>): MJob<Response<T>> {
+        override fun adapt(call: Call<T>): KJob<Response<T>> {
             val deferred = CompletableDeferred<Response<T>>()
 
             deferred.invokeOnCompletion {
@@ -138,7 +138,7 @@ class MJobAdapterFactory private constructor() : CallAdapter.Factory() {
                 }
             })
 
-            return MJob(deferred)
+            return KJob(deferred)
         }
     }
 }

@@ -1,4 +1,4 @@
-package cn.leo.retrofit_ktx.exceptions
+package cn.leo.retrofitktx.exceptions
 
 
 /**
@@ -12,7 +12,9 @@ class ApiException : Exception {
     /*显示的信息*/
     var msg: String? = null
 
-    constructor(e: Throwable) : super(e)
+    constructor(e: Throwable) : super(e) {
+        msg = e.message
+    }
 
     constructor(cause: Throwable, @CodeException.CodeEp code: Int, showMsg: String)
             : super(showMsg, cause) {

@@ -28,6 +28,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //androidX标准库
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
     //kotlin 协程
@@ -36,10 +38,14 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
     implementation 'com.squareup.okhttp3:okhttp:4.3.1'
-
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    //生命周期辅助ktx
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0-alpha01'
+    //junit
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //retrofit_ktx
     implementation project(path: ':retrofit_ktx')
 }

@@ -1,7 +1,5 @@
 package cn.leo.retrofit_ktx.view_model
 
-import cn.leo.retrofit_ktx.exceptions.ApiException
-
 /**
  * @author : ling luo
  * @date : 2019-12-17
@@ -11,9 +9,9 @@ import cn.leo.retrofit_ktx.exceptions.ApiException
 sealed class Result<T> {
     class Loading<T>(val isShow: Boolean) : Result<T>()
     class Success<T>(val data: T) : Result<T>()
-    class Failed<T>(val exception: ApiException) : Result<T>()
+    class Failed<T>(val exception: Exception) : Result<T>()
 
-    var obj: Any? = null
+    var extra: Any? = null
     val successData by lazy { (this as? Success<T>)?.data }
     val failedException by lazy { (this as? Failed<T>)?.exception }
     var loading: (isShow: Boolean) -> Unit = {}
@@ -24,7 +22,7 @@ sealed class Result<T> {
                 value(it)
             }
         }
-    var failed: (exception: ApiException) -> Unit = {}
+    var failed: (exception: Exception) -> Unit = {}
         set(value) {
             field = {
                 loading(false)
@@ -40,7 +38,7 @@ sealed class Result<T> {
         success = block
     }
 
-    fun failed(block: (exception: ApiException) -> Unit = {}) {
+    fun failed(block: (exception: Exception) -> Unit = {}) {
         failed = block
     }
 

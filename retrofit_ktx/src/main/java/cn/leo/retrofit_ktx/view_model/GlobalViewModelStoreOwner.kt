@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 /**
  * @author : ling luo
  * @date : 2019-12-10
+ * 全局 ViewModelStoreOwner 测试类，谨慎使用
  */
 class GlobalViewModelStoreOwner : ViewModelStoreOwner {
     companion object {

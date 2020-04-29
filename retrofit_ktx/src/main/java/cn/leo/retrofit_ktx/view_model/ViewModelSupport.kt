@@ -1,6 +1,6 @@
 package cn.leo.retrofit_ktx.view_model
 
-import cn.leo.retrofit_ktx.http.MJob
+import cn.leo.retrofit_ktx.http.KJob
 import kotlin.reflect.KFunction
 
 /**
@@ -11,8 +11,8 @@ import kotlin.reflect.KFunction
 /**
  * 重载操作符协助订阅方法
  */
-operator fun <R> KFunction<MJob<R>>.plus(obFunc: (R) -> Any): ViewModelSupport<R> {
+operator fun <R> KFunction<KJob<R>>.plus(obFunc: (R) -> Any): ViewModelSupport<R> {
     return ViewModelSupport(this, obFunc)
 }
 
-class ViewModelSupport<R>(val modelFuc: KFunction<MJob<R>>, val obFunc: (R) -> Any)
+class ViewModelSupport<R>(val modelFuc: KFunction<KJob<R>>, val obFunc: (R) -> Any)

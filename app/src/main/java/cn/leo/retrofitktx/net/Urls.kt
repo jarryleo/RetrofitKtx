@@ -13,11 +13,4 @@ object Urls {
      * 获取微信用户信息
      */
     const val GET_USER_INFO = "sns/userinfo"
-
-
-    /**
-     * 获取微信授权
-     */
-    const val GET_ACCESS_TOKEN = "sns/oauth2/access_token"
-
 }

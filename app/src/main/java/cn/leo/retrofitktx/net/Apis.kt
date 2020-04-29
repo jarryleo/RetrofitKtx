@@ -1,8 +1,7 @@
 package cn.leo.retrofitktx.net
 
-import cn.leo.retrofit_ktx.http.MJob
+import cn.leo.retrofit_ktx.http.KJob
 import cn.leo.retrofitktx.bean.BaseBean
-import cn.leo.retrofitktx.bean.WechatAccessBean
 import cn.leo.retrofitktx.bean.WechatUserBean
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -20,28 +19,7 @@ interface Apis {
     fun getWechatUserInfo(
         @Query("access_token") access_token: String,
         @Query("openid") openid: String
-    ): MJob<BaseBean<WechatUserBean>>
-
-
-    /**
-     * 获取微信授权
-     */
-    @GET(Urls.GET_ACCESS_TOKEN)
-    fun getWecharAccessToken(
-        @Query("appid") appid: String,
-        @Query("secret") secret: String,
-        @Query("errcode") code: String,
-        @Query("grant_type") grant_type: String = "authorization_code"
-    ): MJob<WechatAccessBean>
-
-    /*
-    @FormUrlEncoded
-    @POST(Urls.POST_UPDATE_USER_SHARE_INFO)
-    fun updateUserShareInfo(
-        @Field("isShare") isShare: Int,
-        @Field("videoId") videoId: Long
-    ): MJob<UpdateUserShareInfoBean>
-    */
+    ): KJob<BaseBean<WechatUserBean>>
 
 
 }

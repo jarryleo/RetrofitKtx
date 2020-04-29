@@ -1,6 +1,5 @@
-package cn.leo.retrofit_ktx.refactor
+package cn.leo.retrofit_ktx.http
 
-import cn.leo.retrofit_ktx.http.MJobAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.ConcurrentHashMap
@@ -12,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 
 fun <T> Class<T>.create(config: ServiceCreator.Config.() -> Unit = {}): T {
-    return ServiceCreator.create(config, this)
+    return ServiceCreator.create(this, config)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -20,7 +19,7 @@ object ServiceCreator {
     private val retrofitMap = ConcurrentHashMap<String, Retrofit>()
     private val apiMap = ConcurrentHashMap<String, Any>()
 
-    fun <T> create(config: Config.() -> Unit = {}, service: Class<T>): T {
+    fun <T> create(service: Class<T>, config: Config.() -> Unit = {}): T {
         val cfg = Config()
         config(cfg)
         val apiKey = service.name + cfg.baseUrl
@@ -47,6 +46,6 @@ object ServiceCreator {
             }
         var httpClient = OkHttp3Creator.build()
         val converterFactoryList = mutableListOf(GsonConverterFactory.create())
-        val callAdapterFactoryList = mutableListOf(MJobAdapterFactory())
+        val callAdapterFactoryList = mutableListOf(KJobAdapterFactory())
     }
 }
