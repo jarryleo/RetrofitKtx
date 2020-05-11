@@ -10,7 +10,7 @@ import kotlin.reflect.KProperty
  * @author : ling luo
  * @date : 2019-11-15
  */
-class ViewModelCreator<T : KViewModel<*>>(private val clazz: Class<T>) :
+class ViewModelCreator<T : KViewModel>(private val clazz: Class<T>) :
     ReadOnlyProperty<ViewModelStoreOwner, T> {
     override fun getValue(thisRef: ViewModelStoreOwner, property: KProperty<*>): T {
         /**
@@ -25,7 +25,7 @@ class ViewModelCreator<T : KViewModel<*>>(private val clazz: Class<T>) :
  * Fragment共享model 所有和这个fragment处于同一个activity的
  * fragment 以及 activity 获取到的同名model都是同一个对象，可以订阅同一个方法，同时拿到回调
  */
-class ShareModelCreator<T : KViewModel<*>>(private val clazz: Class<T>) :
+class ShareModelCreator<T : KViewModel>(private val clazz: Class<T>) :
     ReadOnlyProperty<Fragment, T> {
     override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
         return ViewModelProvider(thisRef.requireActivity()).get(clazz)
@@ -35,7 +35,7 @@ class ShareModelCreator<T : KViewModel<*>>(private val clazz: Class<T>) :
 /**
  * 全局共享model
  */
-class GlobalModelCreator<T : KViewModel<*>>(private val clazz: Class<T>) :
+class GlobalModelCreator<T : KViewModel>(private val clazz: Class<T>) :
     ReadOnlyProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>): T {
         return ViewModelProvider(GlobalViewModelStoreOwner.globalModelStoreOwner).get(clazz)

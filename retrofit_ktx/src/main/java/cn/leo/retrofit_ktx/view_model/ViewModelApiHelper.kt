@@ -13,12 +13,12 @@ import kotlin.reflect.KProperty
  */
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 class ViewModelApiHelper<T : Any> :
-    ReadOnlyProperty<KViewModel<*>, ViewModelApiHelper<T>> {
+    ReadOnlyProperty<KNetViewModel<*>, ViewModelApiHelper<T>> {
 
     /**
      * viewModel
      */
-    private lateinit var model: KViewModel<*>
+    private lateinit var model: KNetViewModel<*>
 
 
     //请求代理相关
@@ -28,7 +28,7 @@ class ViewModelApiHelper<T : Any> :
     @Volatile
     private var mExtra: Any? = null
 
-    override fun getValue(thisRef: KViewModel<*>, property: KProperty<*>): ViewModelApiHelper<T> {
+    override fun getValue(thisRef: KNetViewModel<*>, property: KProperty<*>): ViewModelApiHelper<T> {
         model = thisRef
         return this
     }

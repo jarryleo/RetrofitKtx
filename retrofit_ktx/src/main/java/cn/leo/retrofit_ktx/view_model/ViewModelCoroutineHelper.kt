@@ -11,12 +11,12 @@ import kotlin.reflect.KProperty
  * @author : ling luo
  * @date : 2019-12-12
  */
-class ViewModelCoroutineHelper : ReadOnlyProperty<KViewModel<*>, ViewModelCoroutineHelper> {
+class ViewModelCoroutineHelper : ReadOnlyProperty<KViewModel, ViewModelCoroutineHelper> {
 
-    private lateinit var model: KViewModel<*>
+    private lateinit var model: KViewModel
 
     override fun getValue(
-        thisRef: KViewModel<*>,
+        thisRef: KViewModel,
         property: KProperty<*>
     ): ViewModelCoroutineHelper {
         model = thisRef
