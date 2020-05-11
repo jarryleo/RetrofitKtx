@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     private fun init() {
         btnTest.setOnClickListener {
             //请求网络（无携带额外参数）
-            //mViewModel.apis.getWechatUserInfo("123", "456")
+            //mViewModel.apis.getWechatUserInfo("123", "456")mViewModel.apis.getWechatUserInfo("123", "456")
             val num = Random.nextInt(999)
             //请求携带额外数据，在返回结果中可以拿到，可用于通过请求结果修改列表单个条目等场景，携带position等
             mViewModel.apis(num).getWechatUserInfo("123", "456")

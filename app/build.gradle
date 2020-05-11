@@ -48,4 +48,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //retrofit_ktx
     implementation project(path: ':retrofit_ktx')
+    //implementation 'com.github.jarryleo:RetrofitKtx:v1.0.0'
 }
