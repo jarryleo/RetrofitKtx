@@ -18,9 +18,9 @@ abstract class KNetViewModel<T : Any> : KViewModel() {
     private val mApiHelper by ViewModelApiHelper<T>()
 
     /**
-     * 非代理网络请求
+     * 非代理网络请求(订阅方式请勿直接请求)
      */
-    protected val api by lazy { createApi() }
+    val api by lazy { createApi() }
 
     /**
      * 代理网络请求
