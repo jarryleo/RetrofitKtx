@@ -20,7 +20,7 @@ abstract class KNetViewModel<T : Any> : KViewModel() {
     /**
      * 非代理网络请求
      */
-    internal val api by lazy { createApi() }
+    protected val api by lazy { createApi() }
 
     /**
      * 代理网络请求
