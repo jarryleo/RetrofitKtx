@@ -16,7 +16,7 @@ Step 2. Add the dependency
 ```
 	dependencies {
           //RetrofitKtx 本库
-	        implementation 'com.github.jarryleo:RetrofitKtx:v1.0.2'
+	  implementation 'com.github.jarryleo:RetrofitKtx:v1.0.3'
           //androidX标准库
           implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
           implementation 'androidx.appcompat:appcompat:1.1.0'
