@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObserver() {
-        mViewModel.observeOnce(Apis::getWechatUserInfo) {
+        mViewModel.observe(this, Apis::getWechatUserInfo) {
             loading {
                 btnTest.text = "loading状态：$it"
             }
