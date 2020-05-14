@@ -11,14 +11,22 @@ import androidx.lifecycle.Observer
 @Suppress("UNUSED", "UNCHECKED_CAST", "MemberVisibilityCanBePrivate")
 open class KLiveData<T> : MediatorLiveData<Result<T>>() {
 
-    private fun getObserver(result: (Result<T>).() -> Unit): Observer<Result<T>> {
-        return Observer {
+    private fun getObserver(
+        result: (Result<T>).() -> Unit
+    ): KObserver<Result<T>> {
+        return KObserver {
             result(it)
             when (it) {
                 is Result.Loading<T> -> it.loading(it.isShow)
                 is Result.Success<T> -> it.success(it.data)
                 is Result.Failed<T> -> it.failed(it.exception)
             }
+        }
+    }
+
+    class KObserver<R>(var block: (R) -> Unit) : Observer<R> {
+        override fun onChanged(t: R) {
+            block(t)
         }
     }
 
@@ -59,6 +67,26 @@ open class KLiveData<T> : MediatorLiveData<Result<T>>() {
     fun observeForever(
         result: (Result<T>).() -> Unit = {}
     ) = super.observeForever(getObserver(result))
+
+
+    private var onceObserver: KObserver<Result<T>>? = null
+    fun observeOnce(
+        result: (Result<T>).() -> Unit = {}
+    ) {
+        if (onceObserver != null) {
+            onceObserver?.block = {
+                result(it)
+                when (it) {
+                    is Result.Loading<T> -> it.loading(it.isShow)
+                    is Result.Success<T> -> it.success(it.data)
+                    is Result.Failed<T> -> it.failed(it.exception)
+                }
+            }
+        } else {
+            onceObserver = getObserver(result)
+            super.observeForever(onceObserver!!)
+        }
+    }
 
     /**
      * LiveData 类型转换，类似与RxJava的map

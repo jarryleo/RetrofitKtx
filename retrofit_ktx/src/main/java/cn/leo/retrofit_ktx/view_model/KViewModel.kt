@@ -2,10 +2,9 @@ package cn.leo.retrofit_ktx.view_model
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cn.leo.retrofit_ktx.http.KJob
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlin.reflect.KFunction
 
 /**
@@ -95,4 +94,15 @@ abstract class KViewModel : ViewModel() {
         result: (Result<R>).() -> Unit = {}
     ) = getLiveData<R>(kFunction.name).observeForever(result)
 
+
+    /**
+     * 订阅一次,重复订阅会取消上次订阅，不重复订阅则相当于observeForever
+     * @param kFunction 参数写法 Api::test
+     */
+    fun <R> observeOnce(
+        kFunction: KFunction<KJob<R>>,
+        result: (Result<R>).() -> Unit = {}
+    ) = viewModelScope.launch(context = Dispatchers.Main) {
+        getLiveData<R>(kFunction.name).observeOnce(result)
+    }
 }
