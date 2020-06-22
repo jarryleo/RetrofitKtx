@@ -29,9 +29,9 @@ open class BaseViewModel<T : Any> : KNetViewModel<T>() {
                     //缓存文件夹
                     cacheDir = App.appContext?.cacheDir
                     //网络请求日志打印拦截器
-                    interceptors.add(LoggerInterceptor())
+                    addInterceptor(LoggerInterceptor())
                     //接口缓存拦截器
-                    interceptors.add(CacheInterceptor())
+                    addInterceptor(CacheInterceptor())
                 }
             }
     }
