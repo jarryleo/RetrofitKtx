@@ -1,10 +1,12 @@
-package cn.leo.retrofitktx
+package cn.leo.retrofitktx.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import cn.leo.retrofit_ktx.view_model.ViewModelCreator
+import cn.leo.retrofitktx.R
 import cn.leo.retrofitktx.exceptions.FactoryException
 import cn.leo.retrofitktx.net.Apis
 import cn.leo.retrofitktx.viewmodel.WechatViewModel
@@ -58,6 +60,10 @@ class MainActivity : AppCompatActivity() {
             mViewModel.apis(num).getWechatUserInfo("123", "456")
             //测试model业务
             mViewModel.getTitle()
+        }
+        //跳转第二页面
+        btnJump.setOnClickListener {
+            startActivity(Intent(this, SecondActivity::class.java))
         }
     }
 }

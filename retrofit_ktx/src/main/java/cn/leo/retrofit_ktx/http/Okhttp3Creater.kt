@@ -92,7 +92,7 @@ object OkHttp3Creator {
         var cacheSize: Long = 30 * 1024 * 1024
 
         /**
-         * 支持https操作（空实现，证书需要自己赋值）
+         * 支持https操作
          */
         var trustManager = object : X509TrustManager {
             override fun checkClientTrusted(
