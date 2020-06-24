@@ -1,8 +1,9 @@
 package cn.leo.retrofitktx.ext
 
+import cn.leo.retrofit_ktx.utils.withIO
 import cn.leo.retrofitktx.bean.BaseBean
 import cn.leo.retrofitktx.exceptions.BusinessException
-import cn.leo.retrofitktx.net.KResult
+import cn.leo.retrofit_ktx.utils.KResult
 import kotlinx.coroutines.Deferred
 
 /**
@@ -17,7 +18,7 @@ suspend fun <T> Deferred<BaseBean<T>>.result(): KResult<T> {
             if (data.errcode == 0) {
                 KResult.success(data.data)
             } else {
-                KResult.failure(BusinessException(data.errcode, data.errmsg))
+                KResult.failure<T>(BusinessException(data.errcode, data.errmsg))
             }
         } catch (e: Exception) {
             KResult.failure<T>(e)

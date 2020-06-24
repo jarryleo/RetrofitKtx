@@ -33,12 +33,3 @@ class ShareModelCreator<T : ViewModel>(private val clazz: Class<T>) :
     }
 }
 
-/**
- * 全局共享model
- */
-class GlobalModelCreator<T : ViewModel>(private val clazz: Class<T>) :
-    ReadOnlyProperty<Any, T> {
-    override fun getValue(thisRef: Any, property: KProperty<*>): T {
-        return ViewModelProvider(GlobalViewModelStoreOwner.globalModelStoreOwner).get(clazz)
-    }
-}

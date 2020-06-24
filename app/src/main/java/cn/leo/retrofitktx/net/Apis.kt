@@ -1,8 +1,8 @@
 package cn.leo.retrofitktx.net
 
-import cn.leo.retrofit_ktx.http.KJob
 import cn.leo.retrofitktx.bean.BaseBean
 import cn.leo.retrofitktx.bean.WechatUserBean
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,10 +16,10 @@ interface Apis {
      * 获取微信用户信息
      */
     @GET(Urls.GET_USER_INFO)
-    fun getWechatUserInfo(
+    fun getWechatUserInfoAsync(
         @Query("access_token") access_token: String,
         @Query("openid") openid: String
-    ): KJob<BaseBean<WechatUserBean>>
+    ): Deferred<BaseBean<WechatUserBean>>
 
 
 }

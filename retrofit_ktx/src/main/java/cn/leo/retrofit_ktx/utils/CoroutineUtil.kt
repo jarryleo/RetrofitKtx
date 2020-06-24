@@ -1,4 +1,4 @@
-package cn.leo.retrofitktx.ext
+package cn.leo.retrofit_ktx.utils
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

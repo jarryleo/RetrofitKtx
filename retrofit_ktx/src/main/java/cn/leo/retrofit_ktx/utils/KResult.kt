@@ -1,4 +1,4 @@
-package cn.leo.retrofitktx.net
+package cn.leo.retrofit_ktx.utils
 
 import java.io.Serializable
 
@@ -35,7 +35,11 @@ class KResult<out T> constructor(
             KResult(value)
 
         fun <T> failure(exception: Throwable): KResult<T> =
-            KResult(createFailure(exception))
+            KResult(
+                createFailure(
+                    exception
+                )
+            )
     }
 
     internal class Failure(
@@ -103,7 +107,9 @@ inline fun <R, T> KResult<T>.fold(
 @Suppress("UNCHECKED_CAST")
 inline fun <R, T> KResult<T>.map(transform: (value: T) -> R): KResult<R> {
     return when {
-        isSuccess -> KResult.success(transform(value as T))
+        isSuccess -> KResult.success(
+            transform(value as T)
+        )
         else -> KResult(value)
     }
 }
@@ -119,7 +125,9 @@ inline fun <R, T> KResult<T>.mapCatching(transform: (value: T) -> R): KResult<R>
 inline fun <R, T : R> KResult<T>.recover(transform: (exception: Throwable) -> R): KResult<R> {
     return when (val exception = exceptionOrNull()) {
         null -> this
-        else -> KResult.success(transform(exception))
+        else -> KResult.success(
+            transform(exception)
+        )
     }
 }
 
