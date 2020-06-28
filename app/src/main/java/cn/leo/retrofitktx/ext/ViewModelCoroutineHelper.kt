@@ -1,20 +1,24 @@
 package cn.leo.retrofitktx.ext
 
+import cn.leo.retrofit_ktx.utils.KResult
 import cn.leo.retrofit_ktx.utils.withIO
 import cn.leo.retrofitktx.bean.BaseBean
 import cn.leo.retrofitktx.exceptions.BusinessException
-import cn.leo.retrofit_ktx.utils.KResult
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.awaitAll
 
 /**
  * @author : ling luo
  * @date : 2020/6/23
  */
 
-suspend fun <T> Deferred<BaseBean<T>>.result(): KResult<T> {
+suspend fun <T> Deferred<BaseBean<T>>.getResult(
+    loadingCallback: (Boolean) -> Unit = {}
+): KResult<T> {
     return withIO {
         try {
-            val data = this@result.await()
+            loadingCallback(true)
+            val data = this@getResult.await()
             if (data.errcode == 0) {
                 KResult.success(data.data)
             } else {
@@ -22,6 +26,24 @@ suspend fun <T> Deferred<BaseBean<T>>.result(): KResult<T> {
             }
         } catch (e: Exception) {
             KResult.failure<T>(e)
+        } finally {
+            loadingCallback(false)
+        }
+    }
+}
+
+suspend fun <T> Collection<Deferred<T>>.getResult(
+    loadingCallback: (Boolean) -> Unit = {}
+):KResult<List<T>>{
+    return withIO {
+        try {
+            loadingCallback(true)
+            val data = this@getResult.awaitAll()
+            KResult.success(data)
+        } catch (e: Exception) {
+            KResult.failure<List<T>>(e)
+        } finally {
+            loadingCallback(false)
         }
     }
 }

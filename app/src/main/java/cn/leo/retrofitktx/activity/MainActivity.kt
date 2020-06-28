@@ -2,16 +2,13 @@ package cn.leo.retrofitktx.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import cn.leo.retrofit_ktx.view_model.ViewModelCreator
 import cn.leo.retrofitktx.R
-import cn.leo.retrofitktx.exceptions.FactoryException
-import cn.leo.retrofitktx.net.Apis
 import cn.leo.retrofitktx.viewmodel.WechatViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,10 +22,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObserver() {
-
+        mViewModel.wechatUserInfo.observe(this, Observer {
+            Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun init() {
+        btnTest.setOnClickListener {
+            mViewModel.getData()
+        }
         //跳转第二页面
         btnJump.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
