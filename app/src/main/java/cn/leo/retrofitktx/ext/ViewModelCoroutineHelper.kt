@@ -12,8 +12,8 @@ import kotlinx.coroutines.awaitAll
  * @date : 2020/6/23
  */
 
-suspend fun <T> Deferred<BaseBean<T>>.getResult(
-    loadingCallback: (Boolean) -> Unit = {}
+suspend inline fun <T> Deferred<BaseBean<T>>.getResult(
+    crossinline loadingCallback: (Boolean) -> Unit = {}
 ): KResult<T> {
     return withIO {
         try {
@@ -32,8 +32,8 @@ suspend fun <T> Deferred<BaseBean<T>>.getResult(
     }
 }
 
-suspend fun <T> Collection<Deferred<T>>.getResult(
-    loadingCallback: (Boolean) -> Unit = {}
+suspend inline fun <T> Collection<Deferred<T>>.getResult(
+    crossinline loadingCallback: (Boolean) -> Unit = {}
 ):KResult<List<T>>{
     return withIO {
         try {

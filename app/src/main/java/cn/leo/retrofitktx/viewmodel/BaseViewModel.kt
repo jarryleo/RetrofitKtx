@@ -1,5 +1,6 @@
 package cn.leo.retrofitktx.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import cn.leo.retrofit_ktx.http.OkHttp3Creator
 import cn.leo.retrofit_ktx.http.ServiceCreator
@@ -14,6 +15,8 @@ import cn.leo.retrofitktx.net.Urls
  * @date : 2020/4/29
  */
 open class BaseViewModel : ViewModel() {
+    val loadingLiveData = MutableLiveData<Boolean>()
+
     companion object {
         val api by lazy {
             ServiceCreator.create(Apis::class.java) {

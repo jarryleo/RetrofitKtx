@@ -42,10 +42,12 @@ class WechatViewModel : BaseViewModel() {
             listOf(a, b)
                 .getResult {
                     Log.e("loading", "$it")
-                }.onSuccess {
+                }
+                .onSuccess {
                     Log.e("getWechatUserInfoAsync", "getData:请求成功")
-                }.onFailure {
-                    Log.e("WechatViewModel", "getData:${it.message} " )
+                }
+                .onFailure {
+                    Log.e("WechatViewModel", "getData:${it.message}")
                 }
 
         }

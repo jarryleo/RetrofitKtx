@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObserver() {
+        mViewModel.loadingLiveData.observe(this, Observer {
+
+        })
         mViewModel.wechatUserInfo.observe(this, Observer {
             Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
         })
