@@ -9,33 +9,22 @@ import kotlinx.coroutines.awaitAll
  * @author : ling luo
  * @date : 2020/6/24
  */
-suspend inline fun <T> Deferred<T>.result(
-    crossinline loadingCallback: (Boolean) -> Unit = {}
-) =
+suspend inline fun <T> Deferred<T>.result() =
     withIO {
         try {
-            loadingCallback(true)
             val data = this@result.await()
             KResult.success(data)
         } catch (e: Exception) {
             KResult.failure<T>(e)
-        } finally {
-            loadingCallback(false)
         }
     }
 
-suspend inline fun <T> Collection<Deferred<T>>.result(
-    crossinline loadingCallback: (Boolean) -> Unit = {}
-): KResult<List<T>> {
-    return withIO {
+suspend inline fun <T> Collection<Deferred<T>>.result() =
+    withIO {
         try {
-            loadingCallback(true)
             val data = this@result.awaitAll()
             KResult.success(data)
         } catch (e: Exception) {
             KResult.failure<List<T>>(e)
-        } finally {
-            loadingCallback(false)
         }
     }
-}
