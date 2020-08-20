@@ -23,6 +23,7 @@ class WechatViewModel : BaseViewModel() {
             api.getWechatUserInfoAsync("123", "456")
                 .getResult {
                     Log.e("loading", "$it")
+                    loadingLiveData.postValue(it)
                 }
                 .onSuccess {
                     wechatUserInfo.postValue(it)
@@ -33,7 +34,13 @@ class WechatViewModel : BaseViewModel() {
                 }
         }
 
+    }
 
+
+    /**
+     * 合并请求测试
+     */
+    private fun testMerge() {
         viewModelScope.launch {
             val a =
                 async { api.getWechatUserInfoAsync("123", "456").await() }
@@ -42,6 +49,7 @@ class WechatViewModel : BaseViewModel() {
             listOf(a, b)
                 .getResult {
                     Log.e("loading", "$it")
+                    loadingLiveData.postValue(it)
                 }
                 .onSuccess {
                     Log.e("getWechatUserInfoAsync", "getData:请求成功")
