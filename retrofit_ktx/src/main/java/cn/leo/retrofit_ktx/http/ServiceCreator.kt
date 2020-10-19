@@ -1,5 +1,6 @@
 package cn.leo.retrofit_ktx.http
 
+import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.ConcurrentHashMap
@@ -47,7 +48,7 @@ object ServiceCreator {
         var httpClient = OkHttp3Creator.build()
         val converterFactoryList =
             mutableListOf(GsonConverterFactory.create())
-        val callAdapterFactoryList =
-            mutableListOf(CoroutineCallAdapterFactory())
+        val callAdapterFactoryList = mutableListOf<CallAdapter.Factory>()
+        //mutableListOf<>(CoroutineCallAdapterFactory())
     }
 }

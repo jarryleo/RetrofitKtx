@@ -1,6 +1,7 @@
 package cn.leo.retrofitktx.activity
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -20,7 +21,7 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_secend)
         btnGet.setOnClickListener {
-            mViewModel.getData()
+            request()
         }
         mViewModel.loadingLiveData.observe(this, Observer {
             if (it) {
@@ -28,6 +29,14 @@ class SecondActivity : AppCompatActivity() {
             } else {
                 loadingDialog.dismiss()
             }
+        })
+    }
+
+    private fun request() {
+        val data = mViewModel.getData("", "")
+        println("data = ${data.hashCode()}")
+        data.observe(this, Observer {
+            Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
         })
     }
 }

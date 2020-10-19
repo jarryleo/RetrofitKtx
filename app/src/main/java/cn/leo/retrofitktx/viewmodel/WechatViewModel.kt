@@ -1,14 +1,10 @@
 package cn.leo.retrofitktx.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import cn.leo.retrofit_ktx.utils.onFailure
-import cn.leo.retrofit_ktx.utils.onSuccess
-import cn.leo.retrofitktx.bean.WechatUserBean
-import cn.leo.retrofitktx.ext.getResult
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import androidx.lifecycle.asLiveData
+import cn.leo.retrofitktx.repository.WecahtRepository
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 
 /**
  * @author : ling luo
@@ -16,50 +12,22 @@ import kotlinx.coroutines.launch
  */
 class WechatViewModel : BaseViewModel() {
 
-    val wechatUserInfo = MutableLiveData<WechatUserBean>()
+    val repository = WecahtRepository()
 
-    fun getData() {
-        viewModelScope.launch {
-            api.getWechatUserInfoAsync("123", "456")
-                .getResult {
-                    Log.e("loading", "$it")
-                    loadingLiveData.postValue(it)
-                }
-                .onSuccess {
-                    wechatUserInfo.postValue(it)
-                    Log.e("getWechatUserInfoAsync", "getData:请求成功")
-                }
-                .onFailure {
-                    Log.e("getWechatUserInfoAsync", "getData:请求失败 ${it.toString()}")
-                }
-        }
+    fun getData(access_token: String, openid: String) =
+        repository.getWechatUserInfo(access_token, openid)
+            .onStart {
+                //showloading
+                loadingLiveData.postValue(true)
+            }
+            .catch {
+                //error
 
-    }
-
-
-    /**
-     * 合并请求测试
-     */
-    private fun testMerge() {
-        viewModelScope.launch {
-            val a =
-                async { api.getWechatUserInfoAsync("123", "456").await() }
-            val b =
-                async { api.getWechatUserInfoAsync("123", "456").await() }
-            listOf(a, b)
-                .getResult {
-                    Log.e("loading", "$it")
-                    loadingLiveData.postValue(it)
-                }
-                .onSuccess {
-                    Log.e("getWechatUserInfoAsync", "getData:请求成功")
-                }
-                .onFailure {
-                    Log.e("WechatViewModel", "getData:${it.message}")
-                }
-
-        }
-    }
-
+            }
+            .onCompletion {
+                //hideloading
+                loadingLiveData.postValue(false)
+            }
+            .asLiveData()//没有绑定生命周期，每次调用都会创建新的liveData fixme
 
 }

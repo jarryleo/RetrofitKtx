@@ -16,10 +16,10 @@ interface Apis {
      * 获取微信用户信息
      */
     @GET(Urls.GET_USER_INFO)
-    fun getWechatUserInfoAsync(
+    suspend fun getWechatUserInfoAsync(
         @Query("access_token") access_token: String,
         @Query("openid") openid: String
-    ): Deferred<BaseBean<WechatUserBean>>
+    ): BaseBean<WechatUserBean>
 
 
 }

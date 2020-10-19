@@ -25,18 +25,21 @@ class MainActivity : AppCompatActivity() {
         mViewModel.loadingLiveData.observe(this, Observer {
 
         })
-        mViewModel.wechatUserInfo.observe(this, Observer {
-            Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
-        })
     }
 
     private fun init() {
         btnTest.setOnClickListener {
-            mViewModel.getData()
+            request()
         }
         //跳转第二页面
         btnJump.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
+    }
+
+    private fun request() {
+        mViewModel.getData("", "").observe(this, Observer {
+            Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
+        })
     }
 }
