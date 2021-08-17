@@ -38,8 +38,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun request() {
-        mViewModel.getData("", "").observe(this, Observer {
-            Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
-        })
+        mViewModel.getData("", "")
+            .observe(this, {
+                Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
+            })
     }
 }

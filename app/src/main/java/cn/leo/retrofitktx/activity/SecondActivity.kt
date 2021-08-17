@@ -35,7 +35,7 @@ class SecondActivity : AppCompatActivity() {
     private fun request() {
         val data = mViewModel.getData("", "")
         println("data = ${data.hashCode()}")
-        data.observe(this, Observer {
+        data.observe(this, {
             Toast.makeText(this, "${it.errcode}", Toast.LENGTH_SHORT).show()
         })
     }

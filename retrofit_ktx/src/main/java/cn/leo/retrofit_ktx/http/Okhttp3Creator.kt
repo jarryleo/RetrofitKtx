@@ -1,5 +1,6 @@
 package cn.leo.retrofit_ktx.http
 
+import android.annotation.SuppressLint
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -94,13 +95,16 @@ object OkHttp3Creator {
         /**
          * 支持https操作
          */
-        var trustManager = object : X509TrustManager {
+        var trustManager = @SuppressLint("CustomX509TrustManager")
+        object : X509TrustManager {
+            @SuppressLint("TrustAllX509TrustManager")
             override fun checkClientTrusted(
                 chain: Array<X509Certificate>,
                 authType: String
             ) {
             }
 
+            @SuppressLint("TrustAllX509TrustManager")
             override fun checkServerTrusted(
                 chain: Array<X509Certificate>,
                 authType: String
